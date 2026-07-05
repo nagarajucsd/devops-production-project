@@ -84,11 +84,12 @@ production-devops-pipeline:v1.0.0
 
 ### Image Details
 
-Property	Value
-Image	    production-devops-pipeline
-Version     v1.0.0
-Java	    17
-Spring Boot	3.x
+|Property  | Value |
+| :--- | :--- |
+| **Image** | production-devops-pipeline |
+| **Version** | v1.0.0 |
+| **Java** | 17 |
+| **Spring Boot** |	3.x |
 
 ## Project Roadmap
 
