@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     tools {
@@ -6,31 +7,7 @@ pipeline {
         maven 'Maven-3.8.7'
     }
 
-    options {
-        timestamps()
-        disableConcurrentBuilds()
-        buildDiscarder(logRotator(
-            numToKeepStr: '20',
-            daysToKeepStr: '10'
-        ))
-    }
-
-    environment {
-        APP_NAME = "production-devops-pipeline"
-        APP_DIR = "app/springboot-app"
-    }
-
     stages {
-
-        stage('Environment Check') {
-            steps {
-                sh 'java -version'
-                sh 'javac -version'
-                sh 'mvn -version'
-                sh 'git --version'
-                sh 'docker --version'
-            }
-        }
 
         stage('Checkout') {
             steps {
@@ -38,51 +15,27 @@ pipeline {
             }
         }
 
-        stage('Compile') {
-    steps {
-        dir("${APP_DIR}") {
-            sh 'mvn clean compile'
+        stage('Build') {
+            steps {
+                dir('app/springboot-app') {
+                    sh 'mvn clean package'
+                }
+            }
         }
-    }
-}
-
-stage('Unit Test') {
-    steps {
-        dir("${APP_DIR}") {
-            sh 'mvn test'
-        }
-    }
-}
-
-stage('Package') {
-    steps {
-        dir("${APP_DIR}") {
-            sh 'mvn package -DskipTests'
-        }
-    }
-}
-
-stage('Archive Artifact') {
-    steps {
-        archiveArtifacts artifacts: 'app/springboot-app/target/*.jar', fingerprint: true
-    }
-}
 
     }
 
     post {
+        always {
+            echo 'Pipeline Finished'
+        }
 
-    success {
-        echo 'Build completed successfully.'
-    }
+        success {
+            echo 'Build Successful'
+        }
 
-    failure {
-        echo 'Build failed.'
+        failure {
+            echo 'Build Failed'
+        }
     }
-
-    always {
-        junit 'app/springboot-app/target/surefire-reports/*.xml'
-        cleanWs()
-    }
-}
 }
