@@ -1,11 +1,18 @@
 pipeline {
 
     agent any
+
+    options {
+        // Fixes the double-checkout issue by disabling the automatic initial checkout
+        skipDefaultCheckout()
+    }
+
     environment {
-        APP_NAME = 'production-devops-pipeline'
-        IMAGE_NAME = 'production-devops-pipeline'
+        APP_NAME       = 'production-devops-pipeline'
+        IMAGE_NAME     = 'production-devops-pipeline'
         CONTAINER_NAME = 'springboot-container'
-        APP_PORT = '8082'
+        APP_PORT       = '8082'
+        SONARQUBE_ENV="SonarQube"
     }
 
     tools {
@@ -37,6 +44,21 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+
+            steps {
+                dir('app/springboot-app') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=production-devops-pipeline \
+                        -Dsonar.projectName=production-devops-pipeline
+                        '''
+                    }
+                }
+            }
+        }
+
         stage('Package') {
             steps {
                 dir('app/springboot-app') {
@@ -48,7 +70,7 @@ pipeline {
         stage('Archive Artifact') {
             steps {
                 archiveArtifacts artifacts: 'app/springboot-app/target/*.jar',
-                         fingerprint: true
+                                 fingerprint: true
             }
         }
 
@@ -62,6 +84,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Verify Docker Image') {
             steps {
                 sh 'docker images | grep ${IMAGE_NAME}'
@@ -70,25 +93,27 @@ pipeline {
 
         stage('Cleanup Old Container') {
             steps {
-                sh '''
-                docker rm -f ${CONTAINER_NAME} || true '''
+                sh 'docker rm -f ${CONTAINER_NAME} || true'
             }
         }
 
         stage('Run Docker Container') {
             steps {
+                // Uses the APP_PORT variable dynamically instead of hardcoding 8082
                 sh '''
                 docker run -d \
                 --name ${CONTAINER_NAME} \
-                -p 8082:8082 \
-                ${IMAGE_NAME}:${BUILD_NUMBER} '''
+                -p ${APP_PORT}:${APP_PORT} \
+                ${IMAGE_NAME}:${BUILD_NUMBER}
+                '''
             }
         }   
+
         stage('Health Check') {
             steps {
                 sh '''
                 sleep 20
-                curl http://localhost:8082/actuator/health
+                curl http://localhost:${APP_PORT}/actuator/health
                 '''
             }
         }
