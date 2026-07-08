@@ -111,8 +111,8 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh '''
-                sleep 20
-                curl http://localhost:${APP_PORT}/actuator/health
+                sleep 60
+                curl -sf http://localhost:${APP_PORT}/actuator/health
                 '''
             }
         }
