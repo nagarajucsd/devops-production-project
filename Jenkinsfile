@@ -81,13 +81,6 @@ pipeline {
             }
         }
 
-        stage('Archive Artifact') {
-            steps {
-                archiveArtifacts artifacts: 'app/springboot-app/target/*.jar',
-                                 fingerprint: true
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -96,6 +89,21 @@ pipeline {
                 -t ${IMAGE_NAME}:${BUILD_NUMBER} \
                 -t ${IMAGE_NAME}:latest .
                 '''
+            }
+        }
+
+        stage('Trivy Image Scan') {
+            steps {
+                sh '''
+                chmod +x scripts/trivy-image-scan.sh
+                ./scripts/trivy-image-scan.sh
+                '''
+            }
+        }
+
+        stage('Archive Security Reports') {
+            steps {
+                archiveArtifacts artifacts: 'reports/*.txt', fingerprint: true
             }
         }
 
