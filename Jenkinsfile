@@ -162,7 +162,6 @@ pipeline {
         }
 
         always {
-            junit 'app/springboot-app/target/surefire-reports/*.xml'
             cleanWs()
         }
     }
