@@ -111,10 +111,15 @@ pipeline {
 
         stage('Trivy Image Scan') {
             steps {
-                sh '''
-                chmod +x scripts/trivy-image-scan.sh
-                ./scripts/trivy-image-scan.sh
-                '''
+                withEnv([
+                    "IMAGE_NAME=${IMAGE_NAME}",
+                    "IMAGE_TAG=latest"
+                ]) {
+                    sh '''
+                        chmod +x scripts/trivy-image-scan.sh
+                        ./scripts/trivy-image-scan.sh
+                    '''
+                }
             }
         }
 
