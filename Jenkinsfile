@@ -5,6 +5,7 @@ pipeline {
     options {
         // Fixes the double-checkout issue by disabling the a   utomatic initial checkout
         skipDefaultCheckout()
+        timestamps()
     }
 
     environment {
@@ -39,7 +40,7 @@ pipeline {
         stage('Unit Test & JaCoCo') {
             steps {
                 dir('app/springboot-app') {
-                    sh 'mvn clean verify'
+                    sh 'mvn test'
                 }
             }
         }
@@ -53,11 +54,23 @@ pipeline {
                 archiveArtifacts artifacts: 'app/springboot-app/target/site/jacoco/**', fingerprint: true
             }
         }
+        stage('Publish JaCoCo HTML Report') {
+            steps {
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'app/springboot-app/target/site/jacoco',
+                    reportFiles: 'index.html',
+                    reportName: 'JaCoCo Coverage Report'
+                ])
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {
                 dir('app/springboot-app') {
-                    withSonarQubeEnv('SonarQube') {
+                    withSonarQubeEnv('${SONARQUBE_ENV}') {
                         sh '''
                         mvn sonar:sonar \
                         -Dsonar.projectKey=production-devops-pipeline \
@@ -77,7 +90,7 @@ pipeline {
             }
         }
 
-        stage('Archive Trivy Report') {
+        stage('Archive Trivy Filesystem Scan Report') {
             steps {
                 archiveArtifacts artifacts: 'reports/*.txt', fingerprint: true
             }
@@ -102,9 +115,9 @@ pipeline {
         stage('Verify Docker Image') {
             steps {
                 sh '''
-                echo "IMAGE_NAME=$IMAGE_NAME"
-                echo "BUILD_NUMBER=$BUILD_NUMBER"
-                docker images
+                docker image inspect ${IMAGE_NAME}:${BUILD_NUMBER} > /dev/null
+                echo "Docker image verified successfully."
+                docker images | grep ${IMAGE_NAME}
                 '''
             }
         }
@@ -141,8 +154,7 @@ pipeline {
         }
 
         stage('Run Docker Container') {
-            steps {
-                // Uses the APP_PORT variable dynamically instead of hardcoding 8082
+            steps {                
                 sh '''
                 chmod +x scripts/docker-run.sh
                 ./scripts/docker-run.sh
@@ -154,8 +166,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    chmod +x scripts/docker-build.sh
-                    ./scripts/docker-build.sh
+                    chmod +x scripts/health-check.sh
+                    ./scripts/health-check.sh
                     '''
                 }
             }
@@ -172,6 +184,9 @@ pipeline {
         }
 
         always {
+            archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
+
+            archiveArtifacts artifacts: 'app/springboot-app/target/site/jacoco/**', fingerprint: true
             cleanWs()
         }
     }
