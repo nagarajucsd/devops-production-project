@@ -6,9 +6,9 @@ spring:
     name: production-devops-pipeline
 
   datasource:
-    url: jdbc:mysql://localhost:3306/employee_db
-    username: devops
-    password: devops123 
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/employee_db}
+    username: ${SPRING_DATASOURCE_USERNAME:devops}
+    password: ${SPRING_DATASOURCE_PASSWORD:devops123}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
