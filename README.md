@@ -1,119 +1,92 @@
 # 🚀 Production DevOps Pipeline
 
-> A production-inspired DevOps project demonstrating CI/CD automation, security scanning, containerization, and deployment of a Spring Boot Employee Management API using modern DevOps practices.
-
-![Java](https://img.shields.io/badge/Java-17-blue)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
-![Maven](https://img.shields.io/badge/Maven-Build-red)
-![Docker](https://img.shields.io/badge/Docker-Container-blue)
-![Jenkins](https://img.shields.io/badge/Jenkins-CI-orange)
-![SonarQube](https://img.shields.io/badge/SonarQube-Code%20Quality-green)
-![Trivy](https://img.shields.io/badge/Trivy-Security-purple)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-green)
+![Maven](https://img.shields.io/badge/Maven-3.8+-red)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
+![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Orchestration-blue)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-red)
+![SonarQube](https://img.shields.io/badge/SonarQube-Code%20Quality-brightgreen)
+![Trivy](https://img.shields.io/badge/Trivy-Security%20Scanning-blueviolet)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
 # 📖 Overview
 
-This repository demonstrates how a Spring Boot application can be built, tested, analyzed, containerized, security scanned, and deployed automatically using a production-style Jenkins CI/CD pipeline.
+Production DevOps Pipeline is a production-ready Employee Management REST API built with **Spring Boot** and integrated with a complete DevOps workflow.
 
-The project follows DevOps best practices including:
+The project demonstrates modern software delivery practices including:
 
-- Continuous Integration (CI)
-- Automated Testing
-- Code Quality Analysis
+- REST API Development
+- Automated Unit Testing
+- Code Coverage Reporting
+- Static Code Analysis
 - Security Scanning
 - Docker Containerization
-- Automated Deployment
-- Health Verification
+- Docker Compose Orchestration
+- Jenkins CI/CD Pipeline
+- Health Monitoring using Spring Boot Actuator
 
-Future modules will extend this project with Docker Compose, Kubernetes, Terraform, AWS deployment, and Monitoring.
+This project serves as a practical demonstration of how enterprise applications are built, tested, secured, containerized, and deployed.  
+
+---
+
+# 🌟 Project Highlights
+
+- ✅ Production-ready Spring Boot REST API
+- ✅ Automated CI/CD with Jenkins
+- ✅ Unit Testing with JUnit 5 & Mockito
+- ✅ Code Coverage with JaCoCo
+- ✅ Static Code Analysis using SonarQube
+- ✅ Security Scanning with Trivy
+- ✅ Docker Containerization
+- ✅ Docker Compose Multi-Container Deployment
+- ✅ MySQL Persistent Storage
+- ✅ Spring Boot Actuator Health Monitoring
+- ✅ Production-style Bash Automation Scripts
+- ✅ Recruiter-friendly Project Documentation
 
 ---
 
 # 🏗️ Project Architecture
 
-```
+```text
+                    Developer
+                        │
+                        ▼
                 GitHub Repository
                         │
                         ▼
                   Jenkins Pipeline
                         │
- ┌──────────────────────┼────────────────────────┐
- │                      │                        │
- ▼                      ▼                        ▼
-Compile            Unit Testing           JaCoCo Coverage
- │                      │                        │
- └──────────────┬───────┴──────────────┬─────────┘
-                ▼                      ▼
-          SonarQube Analysis      Trivy Scan
-                │                      │
-                └──────────────┬───────┘
-                               ▼
-                       Maven Package
-                               │
-                               ▼
-                      Docker Image Build
-                               │
-                               ▼
-                    Docker Image Scan
-                               │
-                               ▼
-                    Deploy Docker Container
-                               │
-                               ▼
-                      Health Check (/actuator)
+        ┌───────────────┼────────────────┐
+        │               │                │
+        ▼               ▼                ▼
+    Maven Build     Unit Tests      JaCoCo Report
+                        │
+                        ▼
+                 SonarQube Analysis
+                        │
+                        ▼
+              Trivy Security Scanning
+                        │
+                        ▼
+                Docker Image Build
+                        │
+                        ▼
+               Docker Compose Deploy
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+ Spring Boot Container         MySQL Container
+          │                           │
+          └──────── Docker Network ───┘
+                      │
+                      ▼
+             Persistent Docker Volume
 ```
-
----
-
-# 📂 Project Structure
-
-```
-production-devops-pipeline
-│
-├── app/
-│   └── springboot-app/
-│
-├── docker/
-│   └── Dockerfile
-│
-├── scripts/
-│   ├── docker-build.sh
-│   ├── docker-run.sh
-│   ├── docker-cleanup.sh
-│   ├── health-check.sh
-│   ├── trivy-fs-scan.sh
-│   └── trivy-image-scan.sh
-│
-├── reports/
-│
-├── docs/
-│   └── screenshots/
-│
-├── Jenkinsfile
-├── README.md
-└── .gitignore
-```
-
----
-
-# ⚙️ Tech Stack
-
-| Category | Technology |
-|-----------|------------|
-| Language | Java 17 |
-| Framework | Spring Boot 3.x |
-| Build Tool | Maven |
-| Database | MySQL 8 |
-| ORM | Spring Data JPA |
-| Testing | JUnit 5, Mockito, MockMvc |
-| API Documentation | Swagger / OpenAPI |
-| Containerization | Docker |
-| CI/CD | Jenkins |
-| Code Quality | SonarQube |
-| Security | Trivy |
-| Version Control | Git & GitHub |
 
 ---
 
@@ -121,259 +94,379 @@ production-devops-pipeline
 
 - Employee Management REST API
 - CRUD Operations
-- DTO Pattern
-- Validation
+- Request Validation
 - Global Exception Handling
-- Spring Boot Actuator
-- Health Endpoint
-- Version Endpoint
-- Swagger UI
+- DTO Pattern
+- Spring Data JPA
 - MySQL Integration
+- Swagger/OpenAPI Documentation
+- Spring Boot Actuator
+- Health Checks
 - Dockerized Application
+- Docker Compose Multi-Container Deployment
 - Jenkins CI/CD Pipeline
-- Automated Health Check
-- SonarQube Analysis
-- Trivy Security Scanning
-- JaCoCo Code Coverage
-
----
-
-# 🔄 Jenkins CI/CD Pipeline
-
-The Jenkins pipeline performs the following stages automatically:
-
-- Checkout Source Code
-- Maven Compile
-- Unit Tests
-- Publish JUnit Reports
-- Generate JaCoCo Coverage
-- Publish JaCoCo Report
-- SonarQube Analysis
+- SonarQube Code Quality Analysis
 - Trivy Filesystem Scan
-- Maven Package
-- Docker Image Build
-- Verify Docker Image
-- Trivy Image Scan
-- Remove Previous Container
-- Deploy New Container
-- Health Check
-- Archive Reports
+- Trivy Docker Image Scan
+- JaCoCo Code Coverage Reports
 
 ---
 
-# 🔒 Security
+# 🛠️ Technology Stack
 
-## SonarQube
-
-Static code analysis is performed automatically during every pipeline execution.
-
-Checks include:
-
-- Bugs
-- Vulnerabilities
-- Code Smells
-- Maintainability
-- Reliability
-- Security Rating
-- Quality Gate
-
----
-
-## Trivy
-
-Security scanning is performed on:
-
-- File System
-- Docker Image
-
-The pipeline identifies:
-
-- Vulnerable Dependencies
-- OS Vulnerabilities
-- Java Package Vulnerabilities
+| Category | Technologies |
+|-----------|-------------|
+| Language | Java 17 |
+| Framework | Spring Boot 3 |
+| Build Tool | Maven |
+| Database | MySQL 8 |
+| ORM | Spring Data JPA |
+| Testing | JUnit 5, Mockito |
+| API Documentation | Swagger / OpenAPI |
+| Containerization | Docker |
+| Container Orchestration | Docker Compose |
+| CI/CD | Jenkins |
+| Code Quality | SonarQube |
+| Security | Trivy |
+| Monitoring | Spring Boot Actuator |
+| Version Control | Git & GitHub |
 
 ---
 
-# 🧪 Testing
+# 📂 Project Structure
 
-Implemented Tests:
-
-- Application Context Test
-- Controller Tests
-- Service Tests
-- Repository Tests
-
-Reports Generated:
-
-- JUnit Test Report
-- JaCoCo Code Coverage Report
-
----
-
-# 🐳 Docker
-
-## Build Image
-
-```bash
-docker build -f docker/Dockerfile -t production-devops-pipeline:latest .
-```
-
-## Run Container
-
-```bash
-docker run -d \
---name springboot-container \
--p 8082:8082 \
-production-devops-pipeline:latest
-```
-
-## Verify
-
-```bash
-docker ps
+```text
+production-devops-pipeline/
+│
+├── app/
+│   └── springboot-app/
+│       ├── src/
+│       ├── target/
+│       └── pom.xml
+│
+├── docker/
+│   └── Dockerfile
+│
+├── docker-compose/
+│   ├── docker-compose.yml
+│   └── .env
+│
+├── scripts/
+│   ├── docker-build.sh
+│   ├── docker-compose-deploy.sh
+│   ├── docker-cleanup.sh
+│   ├── health-check.sh
+│   ├── trivy-fs-scan.sh
+│   └── trivy-image-scan.sh
+│
+├── reports/
+├── docs/screenshots/
+├── Jenkinsfile
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-# ❤️ Health Check
+# 🚀 REST API Endpoints
 
-Application Health Endpoint
+| Method | Endpoint | Description |
+|----------|----------|-------------|
+| GET | `/api/employees` | Get all employees |
+| GET | `/api/employees/{id}` | Get employee by ID |
+| POST | `/api/employees` | Create employee |
+| PUT | `/api/employees/{id}` | Update employee |
+| DELETE | `/api/employees/{id}` | Delete employee |
+
+---
+
+# ❤️ Health Endpoint
 
 ```
 GET /actuator/health
 ```
 
-Expected Response
+Response
 
 ```json
 {
-  "status":"UP"
+  "status": "UP"
 }
 ```
 
 ---
 
-# 📚 API Endpoints
+# 📊 CI/CD Pipeline
 
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | /api/employees | Get All Employees |
-| GET | /api/employees/{id} | Get Employee |
-| POST | /api/employees | Create Employee |
-| PUT | /api/employees/{id} | Update Employee |
-| DELETE | /api/employees/{id} | Delete Employee |
-| GET | /actuator/health | Health Check |
-| GET | /version | Application Version |
+The Jenkins pipeline performs the following stages automatically:
+
+- Checkout Source Code
+- Maven Compile
+- Unit Testing
+- Publish Test Reports
+- JaCoCo Code Coverage
+- SonarQube Analysis
+- Trivy Filesystem Scan
+- Package Application
+- Docker Image Build
+- Docker Image Verification
+- Trivy Image Scan
+- Docker Compose Deployment
+- Health Check Verification
 
 ---
 
-# 📸 Project Screenshots
+# 🐳 Docker
+
+Build image
+
+```bash
+docker build -t production-devops-pipeline:latest -f docker/Dockerfile .
+```
+
+Run container
+
+```bash
+docker run -d \
+-p 8082:8082 \
+production-devops-pipeline:latest
+```
+
+---
+
+# 🐳 Docker Compose
+
+Start the application
+
+```bash
+docker compose --env-file docker-compose/.env \
+-f docker-compose/docker-compose.yml up -d
+```
+
+Stop services
+
+```bash
+docker compose --env-file docker-compose/.env \
+-f docker-compose/docker-compose.yml down
+```
+
+View running services
+
+```bash
+docker compose --env-file docker-compose/.env \
+-f docker-compose/docker-compose.yml ps
+```
+
+---
+
+# 🧪 Running Tests
+
+```bash
+cd app/springboot-app
+
+mvn test
+```
+
+---
+
+# 📈 JaCoCo Coverage
+
+Generate report
+
+```bash
+mvn test
+```
+
+Coverage Report Location
+
+```
+target/site/jacoco/index.html
+```
+
+---
+
+# 🔍 SonarQube Analysis
+
+Run SonarQube analysis
+
+```bash
+mvn sonar:sonar
+```
+
+The Jenkins pipeline automatically performs SonarQube analysis and publishes quality metrics.
+
+---
+
+# 🔒 Security Scanning
+
+Filesystem Scan
+
+```bash
+./scripts/trivy-fs-scan.sh
+```
+
+Docker Image Scan
+
+```bash
+./scripts/trivy-image-scan.sh
+```
+
+---
+
+# 📷 Project Screenshots
 
 ## GitHub Repository
 
-![GitHub](docs/screenshots/01-github-repository.png)
+![GitHub Repository](docs/screenshots/01-github-repository.png)
+
+---
+
+## Project Structure
+
+![Project Structure](docs/screenshots/02-project-structure.png)
 
 ---
 
 ## Swagger UI
 
-![Swagger](docs/screenshots/03-swagger-ui.png)
+![Swagger UI](docs/screenshots/03-swagger-ui.png)
 
 ---
 
-## Jenkins Pipeline
+## Get Employees API
 
-![Jenkins](docs/screenshots/13-jenkins-pipeline-success.png)
+![Get Employees](docs/screenshots/04-postman-get-employees.png)
+
+---
+
+## Create Employee API
+
+![Create Employee](docs/screenshots/05-postman-create-employees.png)
+
+---
+
+## JUnit Test Results
+
+![JUnit Tests](docs/screenshots/06-junit-tests.png)
+
+---
+
+## JaCoCo Code Coverage
+
+![JaCoCo Report](docs/screenshots/07-jacoco-report.png)
 
 ---
 
 ## SonarQube Dashboard
 
-![Sonar](docs/screenshots/08-sonarqube-dashboard.png)
+![SonarQube Dashboard](docs/screenshots/08-sonarqube-dashboard.png)
 
 ---
 
-## JaCoCo Report
+## SonarQube Project Overview
 
-![JaCoCo](docs/screenshots/07-jacoco-report.png)
-
----
-
-## Trivy Scan
-
-![Trivy](docs/screenshots/10-trivy-filesystem-scan.png)
+![SonarQube Overview](docs/screenshots/09-sonarqube-overview.png)
 
 ---
 
-## Docker Containers
+## Trivy Filesystem Scan
 
-![Docker](docs/screenshots/12-docker-containers.png)
-
----
-
-## Health Check
-
-![Health](docs/screenshots/14-health-check-success.png)
+![Trivy Filesystem Scan](docs/screenshots/10-trivy-filesystem-scan.png)
 
 ---
 
-# 🚀 Getting Started
+## Docker Images
 
-## Clone Repository
+![Docker Images](docs/screenshots/11-docker-images.png)
+
+---
+
+## Running Docker Containers
+
+![Docker Containers](docs/screenshots/12-docker-containers.png)
+
+---
+
+## Jenkins CI/CD Pipeline
+
+![Jenkins Pipeline](docs/screenshots/13-jenkins-pipeline-success.png)
+
+---
+
+## Health Check Verification
+
+![Health Check](docs/screenshots/14-health-check-success.png)
+
+---
+
+## Spring Boot Actuator
+
+![Actuator Health](docs/screenshots/15-actuator-health.png)
+
+---
+
+## Docker Compose Services
+
+![Docker Compose](docs/screenshots/16-docker-compose-ps.png)
+
+---
+
+# ▶️ Local Setup
+
+Clone repository
 
 ```bash
 git clone https://github.com/Nagaraju-209/production-devops-pipeline.git
+
+cd production-devops-pipeline
 ```
 
-## Build
+Build application
 
 ```bash
-cd production-devops-pipeline
+cd app/springboot-app
+
 mvn clean package
 ```
 
-## Run
+Start using Docker Compose
 
 ```bash
-java -jar target/*.jar
+docker compose \
+--env-file docker-compose/.env \
+-f docker-compose/docker-compose.yml up -d
+```
+
+Application
+
+```
+http://localhost:8082
+```
+
+Swagger UI
+
+```
+http://localhost:8082/swagger-ui/index.html
+```
+
+Health Endpoint
+
+```
+http://localhost:8082/actuator/health
 ```
 
 ---
 
-# 📈 Project Roadmap
+# 📌 Future Enhancements
 
-## ✅ Completed
-
-- Spring Boot REST API
-- MySQL Integration
-- DTO Pattern
-- Validation
-- Global Exception Handling
-- Swagger Documentation
-- Docker
-- Jenkins Pipeline
-- JaCoCo
-- SonarQube
-- Trivy
-- Automated Health Check
-
----
-
-## 🚧 In Progress
-
-- Docker Compose
-
----
-
-## 📅 Planned
-
-- Kubernetes
-- AWS EC2 Deployment
-- Terraform
-- Prometheus
-- Grafana
-- GitHub Actions
+- Kubernetes Deployment
 - Helm Charts
+- Prometheus Monitoring
+- Grafana Dashboards
+- Terraform Infrastructure
+- GitHub Actions Pipeline
+- AWS Deployment
+- NGINX Reverse Proxy
 
 ---
 
@@ -389,3 +482,11 @@ java -jar target/*.jar
 # ⭐ Support
 
 If you found this project useful, consider giving it a ⭐ on GitHub.
+
+It helps others discover the project and motivates continued improvements.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
