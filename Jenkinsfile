@@ -144,49 +144,72 @@ pipeline {
 
         
 
-        stage('Deploy with Docker Compose') {
+        stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                chmod +x scripts/docker-compose-deploy.sh
-                ./scripts/docker-compose-deploy.sh
+                    echo "Deploying application to Kubernetes..."
+
+                    kubectl apply -f kubernetes/
+
+                    echo "Deployment submitted successfully."
                 '''
             }
         }
-
-        stage('Verify Docker Compose Services') {
+        stage('Verify Rollout') {
             steps {
                 sh '''
-                docker compose -f docker-compose/docker-compose.yml ps
+                    echo "Waiting for deployment rollout..."
+
+                    kubectl rollout status deployment/springboot-app --timeout=180s
                 '''
             }
         }
-
-        stage('Health Check') {
+        stage('Verify Kubernetes Resources') {
             steps {
-                script {
-                    sh '''
-                    chmod +x scripts/health-check.sh
-                    ./scripts/health-check.sh
-                    '''
-                }
+                sh '''
+                    echo "========== Pods =========="
+                    kubectl get pods -o wide
+
+                    echo ""
+                    echo "========== Deployments =========="
+                    kubectl get deployments
+
+                    echo ""
+                    echo "========== Services =========="
+                    kubectl get svc
+                '''
+            }
+        }
+        stage('Application Health Check') {
+            steps {
+                sh '''
+                    echo "Checking application health..."
+
+                    sleep 10
+
+                    curl --fail http://localhost:30082/actuator/health
+                '''
             }
         }
     }
     
     post {
         success {
-            echo 'Build completed successfully.'
+            echo '======================================='
+            echo 'CI/CD Pipeline Completed Successfully'
+            echo 'Application Deployed to Kubernetes'
+            echo '======================================='
         }
 
         failure {
-           echo 'Build failed.'
+            echo '======================================='
+            echo 'Pipeline Failed'
+            echo 'Check Jenkins Console Logs'
+            echo '======================================='
         }
 
         always {
-            archiveArtifacts artifacts: 'reports/**/*', fingerprint: true
-
-            archiveArtifacts artifacts: 'app/springboot-app/target/site/jacoco/**', fingerprint: true
-            cleanWs()
+            cleanWs()   
         }
     }
 }
